@@ -12,12 +12,13 @@ services:
       - reverse-proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik/traefik.toml:/etc/traefik/traefik.toml:ro
-      - ./traefik/acme:/etc/traefik/acme
+      - ./traefik.toml:/traefik.toml:ro
+      - ./acme.json:/acme.json
     container_name: traefik
     labels:
       - "traefik.frontend.rule=Host:mon.ioterr.se"
       - "traefik.port=8080"
+      - "traefik.frontend.auth.basic=admin:$$apr1$$IBj9Hfsd$$kf7vXLpY4/9XD365jcp/n1"
 networks:
   reverse-proxy:
     external: true
