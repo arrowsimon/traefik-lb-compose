@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  traefik:
+    image: traefik:latest
+    command: --web --docker --logLevel=INFO
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - reverse-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.toml:/etc/traefik/traefik.toml:ro
+      - ./traefik/acme:/etc/traefik/acme
+    container_name: traefik
+    labels:
+      - "traefik.frontend.rule=Host:mon.ioterr.se"
+      - "traefik.port=8080"
+networks:
+  reverse-proxy:
+    external: true
+
